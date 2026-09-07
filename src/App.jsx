@@ -18,7 +18,7 @@ function App() {
         <div className="mobile-brand brand-mark">PULSE<span>/</span>FIT</div>
         <div className="login-heading">
           <p className="eyebrow">WELCOME BACK</p>
-          <h1 id="login-title">Ready when you are.</h1>
+          <h1 id="login-title">Ready when you are..</h1>
           <p>Sign in to continue your training journey.</p>
         </div>
 
