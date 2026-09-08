@@ -1,16 +1,50 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+function getCurrentView() {
+  if (window.location.pathname === '/home') return 'home'
+  if (window.location.pathname === '/signup') return 'signup'
+  return 'login'
+}
+
 function App() {
-  const [isHome, setIsHome] = useState(() => window.location.pathname === '/home')
+  const [view, setView] = useState(() => getCurrentView())
+
+  useEffect(() => {
+    function handlePopState() {
+      setView(getCurrentView())
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  function navigateTo(path, nextView) {
+    window.history.pushState({}, '', path)
+    setView(nextView)
+  }
 
   function handleSignIn(event) {
     event.preventDefault()
-    window.history.pushState({}, '', '/home')
-    setIsHome(true)
+    navigateTo('/home', 'home')
   }
 
-  if (isHome) {
+  function handleCreateAccount(event) {
+    event.preventDefault()
+    navigateTo('/home', 'home')
+  }
+
+  function handleOpenSignup(event) {
+    event.preventDefault()
+    navigateTo('/signup', 'signup')
+  }
+
+  function handleOpenLogin(event) {
+    event.preventDefault()
+    navigateTo('/', 'login')
+  }
+
+  if (view === 'home') {
     return (
       <main className="home-page">
         <header className="home-header">
@@ -54,6 +88,40 @@ function App() {
     )
   }
 
+  if (view === 'signup') {
+    return (
+      <main className="signup-page">
+        <section className="signup-card" aria-labelledby="signup-title">
+          <div className="brand-mark" style={{ color: '#181611' }}>PULSE<span>/</span>FIT</div>
+          <div className="login-heading" style={{ marginTop: '24px' }}>
+            <p className="eyebrow">CREATE ACCOUNT</p>
+            <h1 id="signup-title">Welcome to PulseFit.</h1>
+            <p>Set up your profile to start training smarter.</p>
+          </div>
+
+          <form className="login-form signup-form" onSubmit={handleCreateAccount}>
+            <label htmlFor="full-name">Full name</label>
+            <input id="full-name" name="fullName" type="text" autoComplete="name" placeholder="Jamie Doe" required />
+
+            <label htmlFor="signup-email">Email address</label>
+            <input id="signup-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required />
+
+            <label htmlFor="signup-password">Password</label>
+            <input id="signup-password" name="password" type="password" autoComplete="new-password" placeholder="Create a password" required />
+
+            <label htmlFor="confirm-password">Confirm password</label>
+            <input id="confirm-password" name="confirmPassword" type="password" autoComplete="new-password" placeholder="Confirm your password" required />
+
+            <button type="submit">Create account <span aria-hidden="true">-&gt;</span></button>
+          </form>
+
+          <p className="signup-prompt">Already have an account? <a href="/" onClick={handleOpenLogin}>Sign in</a></p>
+          <p className="login-footer">By continuing, you agree to our <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>.</p>
+        </section>
+      </main>
+    )
+  }
+
   return (
     <main className="login-page">
       <div className="login-aside" aria-hidden="true">
@@ -88,7 +156,7 @@ function App() {
           <button type="submit">Sign in <span aria-hidden="true">-&gt;</span></button>
         </form>
 
-        <p className="signup-prompt">New to PulseFit? <a href="#create-account">Create an account</a></p>
+        <p className="signup-prompt">New to PulseFit? <a href="/signup" onClick={handleOpenSignup}>Create an account</a></p>
         <p className="login-footer">By continuing, you agree to our <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>.</p>
       </section>
     </main>
