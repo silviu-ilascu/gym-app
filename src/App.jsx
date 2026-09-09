@@ -3,6 +3,8 @@ import './App.css'
 
 function getCurrentView() {
   if (window.location.pathname === '/home') return 'home'
+  if (window.location.pathname === '/workouts') return 'workouts'
+  if (window.location.pathname === '/progress') return 'progress'
   if (window.location.pathname === '/signup') return 'signup'
   return 'login'
 }
@@ -47,20 +49,13 @@ function App() {
   if (view === 'home') {
     return (
       <main className="home-page">
-        <header className="home-header">
-          <div className="brand-mark">PULSE<span>/</span>FIT</div>
-          <nav aria-label="Main navigation">
-            <a className="active" href="/home">Dashboard</a>
-            <a href="#workouts">Workouts</a>
-            <a href="#progress">Progress</a>
-          </nav>
-          <button className="profile-button" type="button" aria-label="Open profile">JD</button>
-        </header>
-
         <section className="home-content" aria-labelledby="home-title">
-          <p className="eyebrow">MONDAY, SEPTEMBER 7</p>
-          <h1 id="home-title">Good morning, Jamie.</h1>
-          <p className="home-intro">Your next session is waiting. Keep your momentum going.</p>
+          <div className="home-topbar">
+            <div>
+              <h1 id="home-title"><span className="welcome-label">Welcome Back,</span> Jamie.</h1>
+            </div>
+            <button className="profile-button" type="button" aria-label="Open profile">JD</button>
+          </div>
 
           <div className="home-grid">
             <article className="next-workout">
@@ -84,6 +79,29 @@ function App() {
             </article>
           </div>
         </section>
+        <BottomNavigation view={view} navigateTo={navigateTo} />
+      </main>
+    )
+  }
+
+  if (view === 'workouts' || view === 'progress') {
+    const isWorkouts = view === 'workouts'
+
+    return (
+      <main className="home-page">
+        <section className="home-content secondary-page" aria-labelledby="secondary-title">
+          <p className="eyebrow">{isWorkouts ? 'YOUR ROUTINE' : 'YOUR MILESTONES'}</p>
+          <h1 id="secondary-title">{isWorkouts ? 'Choose your next workout.' : 'See how far you have come.'}</h1>
+          <p className="home-intro">
+            {isWorkouts ? 'Build a session that fits your energy today.' : 'Your consistency is adding up. Keep the momentum going.'}
+          </p>
+          <div className="secondary-panel">
+            <p className="card-label">{isWorkouts ? 'RECOMMENDED' : 'THIS WEEK'}</p>
+            <strong>{isWorkouts ? 'Full body power' : '72%'}</strong>
+            <p>{isWorkouts ? '40 min / Intermediate' : '4 of 5 sessions complete'}</p>
+          </div>
+        </section>
+        <BottomNavigation view={view} navigateTo={navigateTo} />
       </main>
     )
   }
@@ -160,6 +178,35 @@ function App() {
         <p className="login-footer">By continuing, you agree to our <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>.</p>
       </section>
     </main>
+  )
+}
+
+function BottomNavigation({ view, navigateTo }) {
+  const items = [
+    { label: 'Home', path: '/home', view: 'home' },
+    { label: 'Workouts', path: '/workouts', view: 'workouts' },
+    { label: 'Progress', path: '/progress', view: 'progress' },
+  ]
+
+  function handleNavigation(event, item) {
+    event.preventDefault()
+    navigateTo(item.path, item.view)
+  }
+
+  return (
+    <nav className="bottom-navigation" aria-label="Main navigation">
+      {items.map((item) => (
+        <a
+          className={view === item.view ? 'active' : ''}
+          href={item.path}
+          aria-current={view === item.view ? 'page' : undefined}
+          key={item.view}
+          onClick={(event) => handleNavigation(event, item)}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
   )
 }
 
