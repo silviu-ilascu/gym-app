@@ -47,6 +47,12 @@ function App() {
   }
 
   if (view === 'home') {
+    const previousWorkouts = [
+      { name: 'Lower body power', date: '09-09', duration: '42 min' },
+      { name: 'Core and conditioning', date: '08-09', duration: '35 min' },
+      { name: 'Upper body strength', date: '06-09', duration: '45 min' },
+    ]
+
     return (
       <main className="home-page">
         <section className="home-content" aria-labelledby="home-title">
@@ -56,6 +62,19 @@ function App() {
             </div>
             <button className="profile-button" type="button" aria-label="Open profile">JD</button>
           </div>
+
+          <section className="previous-workouts" aria-labelledby="previous-workouts-title">
+            <h2 id="previous-workouts-title">Previous Workout</h2>
+            {previousWorkouts.map((workout) => (
+              <div className="workout-row" key={workout.name}>
+                <div>
+                  <h2>{workout.name}</h2>
+                  <p>{workout.date}</p>
+                </div>
+                <span>{workout.duration}</span>
+              </div>
+            ))}
+          </section>
 
           <div className="home-grid">
             <article className="next-workout">
