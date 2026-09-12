@@ -11,6 +11,7 @@ function getCurrentView() {
 
 function App() {
   const [view, setView] = useState(() => getCurrentView())
+  const [profileOpen, setProfileOpen] = useState(false)
 
   useEffect(() => {
     function handlePopState() {
@@ -46,6 +47,11 @@ function App() {
     navigateTo('/', 'login')
   }
 
+  function handleLogout() {
+    setProfileOpen(false)
+    navigateTo('/', 'login')
+  }
+
   if (view === 'home') {
     const previousWorkouts = [
       { name: 'Lower body power', date: '09-09', duration: '42 min' },
@@ -60,7 +66,23 @@ function App() {
             <div>
               <h1 id="home-title"><span className="welcome-label">Welcome Back,</span> Jamie.</h1>
             </div>
-            <button className="profile-button" type="button" aria-label="Open profile">JD</button>
+            <div className="profile-menu">
+              <button
+                className="profile-button"
+                type="button"
+                aria-label="Open profile menu"
+                aria-expanded={profileOpen}
+                aria-controls="profile-menu"
+                onClick={() => setProfileOpen((isOpen) => !isOpen)}
+              >
+                JD
+              </button>
+              {profileOpen && (
+                <div className="profile-dropdown" id="profile-menu" role="menu">
+                  <button type="button" role="menuitem" onClick={handleLogout}>Log out</button>
+                </div>
+              )}
+            </div>
           </div>
 
           <section className="previous-workouts" aria-labelledby="previous-workouts-title">
