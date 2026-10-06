@@ -98,19 +98,6 @@
   font-size: 15px;
 }
 
-.aside-number {
-  position: relative;
-  z-index: 1;
-  color: var(--orange);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-}
-
-.aside-number span {
-  color: #77756f;
-}
-
 .login-panel {
   align-self: center;
   justify-self: center;

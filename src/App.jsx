@@ -175,7 +175,6 @@ function App() {
           </form>
 
           <p className="signup-prompt">Already have an account? <a href="/" onClick={handleOpenLogin}>Sign in</a></p>
-          <p className="login-footer">By continuing, you agree to our <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>.</p>
         </section>
       </main>
     )
@@ -191,7 +190,6 @@ function App() {
           <div className="aside-line" />
           <p>Track your progress, book your next class, and keep moving forward.</p>
         </div>
-        <div className="aside-number">01 <span>/ 04</span></div>
       </div>
 
       <section className="login-panel" aria-labelledby="login-title">
